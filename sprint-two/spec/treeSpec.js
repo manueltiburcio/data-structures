@@ -27,9 +27,9 @@ describe('tree', function() {
   });
 
   it('should be able to add children to a tree\'s child', function() {
-    tree.addChild(5);
-    tree.children[0].addChild(6);
-    expect(tree.children[0].children[0].value).to.equal(6);
+    tree.addChild(5); // add child value 5 + tree to top parent
+    tree.children[0].addChild(6); // add child value 6 to children of 5;
+    expect(tree.children[0].children[0].value).to.equal(6); // from parent, go to first child (5), then go to first child of 5 (6) === 6
   });
 
   it('should correctly detect nested children', function() {
