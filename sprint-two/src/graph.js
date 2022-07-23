@@ -32,8 +32,8 @@ Graph.prototype.contains = function(node) {
   let result = false;
 
   this.storage.forEach(function (element) {
-    console.log(element);
-    console.log(node);
+    // console.log(element);
+    // console.log(node);
     if (element.node === node) {
       result = true;
     }
@@ -47,13 +47,17 @@ Graph.prototype.removeNode = function(node) {
 
   // Remove 0 (zero) elements before index 2, and insert "drum"
   // let removed = myFish.splice(2, 0)
-
   this.storage.splice(this.storage.indexOf(node.node))
+  this.storage.forEach(function(nodes) {
+    nodes.edges.splice(nodes.edges.indexOf(node), 1);
+  })
 };
 
 // Returns a boolean indicating whether two specified nodes are connected.  Pass in the values contained in each of the two nodes.
 Graph.prototype.hasEdge = function(fromNode, toNode) {
-  if (this.storage[this.storage.indexOf(node.fromNode)].edges.indexOf(fromNode) === -1) {
+  //console.log(this.storage.filter(element => element.node === fromNode)[0].edges.indexOf(fromNode))
+  //  this.storage array -> elements (objects) === element.node = fromNode [0] .edges indexOf toNode
+  if (this.storage.filter(element => element.node === fromNode)[0].edges.indexOf(toNode) === -1) {
     return false
   }
   return true;
@@ -61,18 +65,28 @@ Graph.prototype.hasEdge = function(fromNode, toNode) {
 
 // Connects two nodes in a graph by adding an edge between them.
 Graph.prototype.addEdge = function(fromNode, toNode) {
-  console.log(this.storage[this.storage.indexOf(fromNode)])
-  this.storage[this.storage.indexOf(fromNode)].edges.push(toNode);
-  this.storage[this.storage.indexOf(toNode)].edges.push(fromNode);
+  this.storage.filter(element => element.node === fromNode)[0].edges.push(toNode);
+  this.storage.filter(element => element.node === toNode)[0].edges.push(fromNode);
 };
 
 // Remove an edge between any two specified (by value) nodes.
 Graph.prototype.removeEdge = function(fromNode, toNode) {
+  let edgesArrayFrom = this.storage.filter(element => element.node === fromNode)[0].edges
+  let edgesArrayTo = this.storage.filter(element => element.node === toNode)[0].edges
+
+  edgesArrayFrom.splice(edgesArrayFrom.indexOf(toNode), 1);
+  edgesArrayTo.splice(edgesArrayTo.indexOf(fromNode), 1);
 };
 
 // Pass in a callback which will be executed on each node of the graph.
 Graph.prototype.forEachNode = function(cb) {
+
+  this.storage.forEach(function(element) {
+    cb(element.node);
+  })
+
 };
+
 
 /*
  * Complexity: What is the time complexity of the above functions?
